@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
+<title>Copy AI -> Paste Whatsapp | AI2Whatsapp</title>
+<style>
+  body { max-width: 600px; margin: auto; font-family: Arial, sans-serif; padding: 10px; background: #f9f9f9; }
+  h1 { font-size: 22px; margin-bottom: 5px; }
+  textarea { width: 97%; height: 150px; margin-bottom: 20px; margin-top: 20px; padding: 10px; font-size: 12px; border: 1px solid #ccc; border-radius: 5px; }
+  button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; background-color: #4CAF50; color: white; border-radius: 5px; margin-right: 10px; }
+  button:hover { background-color: #45a049; }
+
+@media (prefers-color-scheme: dark)
+</style>
+</head>
+<body>
+
+<h1>Convert ChatGPT to WhatsApp</h1>
+
+<textarea id="inputMarkdown" placeholder="Paste the text here in markdown format..."></textarea>
+
+<button onclick="convertir()">Convert</button>
+<br />
+
+<textarea id="outputWhatsapp" placeholder="The text for WhatsApp will appear here..." readonly></textarea>
+
+<button onclick="copiarResultado()">Copy to clipboard</button>
+
+<script>
+function convertir() {
+  let texto = document.getElementById('inputMarkdown').value;
+
+  if (!texto.trim()) {
+    alert("Please paste text in Markdown format to convert.");
+    return;
+  }
+
+  // Línea por línea: eliminar solo los '#' y '---', sin borrar el contenido útil
+  let lineas = texto.split('\n').map(line => {
+    let trimmed = line.trim();
+    if (trimmed.startsWith('#')) {
+      return line.replace(/^#+\s*/, ''); // elimina los # al inicio pero deja el texto
+    }
+    if (trimmed === '---') {
+      return ''; // borra solo la línea de separador
+    }
+    return line;
+  });
+  texto = lineas.join('\n');
+
+  // Conversión básica de ChatGPT a formato WhatsApp
+  texto = texto.replace(/\*\*(.*?)\*\*/g, '*$1*'); // negrita **texto** -> *texto*
+  texto = texto.replace(/\_(.*?)\_/g, '_$1_');       // cursiva _texto_ -> _texto_
+  texto = texto.replace(/\~\~(.*?)\~\~/g, '~$1~'); // tachado ~~texto~~ -> ~texto~
+  texto = texto.replace(/\`(.*?)\`/g, '```$1```');   // monoespaciado `texto` -> ```texto```
+// Listas simples
+  texto = texto.replace(/^[-*] (.*)$/gm, '• $1');
+// Blockquotes
+  texto = texto.replace(/^> (.*)$/gm, '_$1_');
+
+
+  document.getElementById('outputWhatsapp').value = texto.trim();
+}
+
+function copiarResultado() {
+  if (!navigator.clipboard) {
+    const input = document.getElementById('outputWhatsapp');
+    input.select();
+    document.execCommand('copy');
+    alert("Texto copiado al portapapeles");
+    return;
+  }
+  navigator.clipboard.writeText(texto).then(() => {
+    alert("Text copied to clipboard");
+  }).catch(err => {
+    alert("Error copying: " + err);
+  });
+}
+</script>
+
+</body>
+</html>
