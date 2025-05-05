@@ -11,8 +11,8 @@
   textarea { width: 97%; height: 150px; margin-bottom: 20px; margin-top: 20px; padding: 10px; font-size: 12px; border: 1px solid #ccc; border-radius: 5px; }
   button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; background-color: #4CAF50; color: white; border-radius: 5px; margin-right: 10px; }
   button:hover { background-color: #45a049; }
-
-@media (prefers-color-scheme: dark)
+  .copiado {text-align: center; color: green; margin-top: 0.5rem;float:right;}
+  @media (prefers-color-scheme: dark)
 </style>
 </head>
 <body>
@@ -26,7 +26,7 @@
 
 <textarea id="outputWhatsapp" placeholder="The text for WhatsApp will appear here..." readonly></textarea>
 
-<button onclick="copiarResultado()">Copy to clipboard</button>
+<button onclick="copiarResultado()">Copy to clipboard</button>  <div id="copiado" class="copiado" style="display: none;">Text copied to clipboard</div>
 
 <script>
 function convertir() {
@@ -65,20 +65,24 @@ function convertir() {
 }
 
 function copiarResultado() {
-  if (!navigator.clipboard) {
-    const input = document.getElementById('outputWhatsapp');
-    input.select();
-    document.execCommand('copy');
-    alert("Texto copiado al portapapeles");
-    return;
+  const texto = document.getElementById('outputWhatsapp').value;
+
+  if (!texto.trim()) {
+    return; // No hacer nada si no hay texto para copiar
   }
-  navigator.clipboard.writeText(texto).then(() => {
-    alert("Text copied to clipboard");
-  }).catch(err => {
-    alert("Error copying: " + err);
-  });
+
+  // Seleccionar el contenido del textarea de salida
+  const output = document.getElementById('outputWhatsapp');
+  output.select();
+  document.execCommand('copy'); // Método de copia para compatibilidad con navegadores antiguos
+
+  // Mostrar mensaje visual
+  const mensajeCopiado = document.getElementById('copiado');
+  mensajeCopiado.style.display = 'block';
+  setTimeout(() => mensajeCopiado.style.display = 'none', 2000);
 }
 </script>
+
 
 </body>
 </html>
