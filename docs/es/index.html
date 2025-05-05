@@ -65,18 +65,37 @@ function convertir() {
 }
 
 function copiarResultado() {
-  if (!navigator.clipboard) {
+  // Seleccionar el contenido del textarea de salida
+  const texto = document.getElementById('outputWhatsapp').value;
+
+  if (!texto.trim()) {
+    return; // No hacer nada si no hay texto para copiar
+  }
+
+  // Intentar usar la Clipboard API moderna
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(texto).then(() => {
+      // Aplicar un efecto visual al textarea para indicar que se copió
+      const output = document.getElementById('outputWhatsapp');
+      output.style.backgroundColor = '#c8f7c5'; // Verde claro (copiado)
+      setTimeout(() => {
+        output.style.backgroundColor = ''; // Restaurar el color original después de 1 segundo
+      }, 1000);
+    }).catch(err => {
+      console.error("Error al copiar:", err); // Registrar errores en la consola si ocurren
+    });
+  } else {
+    // Compatibilidad con navegadores antiguos
     const input = document.getElementById('outputWhatsapp');
     input.select();
-    document.execCommand('copy');
-    alert("Texto copiado al portapapeles");
-    return;
+    document.execCommand('copy'); // Método de copia en navegadores más antiguos
+
+    // Aplicar el efecto visual
+    input.style.backgroundColor = '#c8f7c5';
+    setTimeout(() => {
+      input.style.backgroundColor = '';
+    }, 1000);
   }
-  navigator.clipboard.writeText(texto).then(() => {
-    alert("Texto copiado al portapapeles");
-  }).catch(err => {
-    alert("Error al copiar: " + err);
-  });
 }
 </script>
 
