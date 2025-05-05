@@ -11,8 +11,8 @@
   textarea { width: 97%; height: 150px; margin-bottom: 20px; margin-top: 20px; padding: 10px; font-size: 12px; border: 1px solid #ccc; border-radius: 5px; }
   button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; background-color: #4CAF50; color: white; border-radius: 5px; margin-right: 10px; }
   button:hover { background-color: #45a049; }
-
-@media (prefers-color-scheme: dark)
+  .copiado {text-align: center; color: green; margin-top: 0.5rem;float:right;}
+  @media (prefers-color-scheme: dark)
 </style>
 </head>
 <body>
@@ -26,7 +26,7 @@
 
 <textarea id="outputWhatsapp" placeholder="Aquí aparecerá el texto para WhatsApp..." readonly></textarea>
 
-<button onclick="copiarResultado()">Copiar al portapapeles</button>
+<button onclick="copiarResultado()">Copiar al portapapeles</button> <div id="copiado" class="copiado" style="display: none;">Texto copiado al portapapeles</div>
 
 <script>
 function convertir() {
@@ -65,37 +65,21 @@ function convertir() {
 }
 
 function copiarResultado() {
-  // Seleccionar el contenido del textarea de salida
   const texto = document.getElementById('outputWhatsapp').value;
 
   if (!texto.trim()) {
     return; // No hacer nada si no hay texto para copiar
   }
 
-  // Intentar usar la Clipboard API moderna
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(texto).then(() => {
-      // Aplicar un efecto visual al textarea para indicar que se copió
-      const output = document.getElementById('outputWhatsapp');
-      output.style.backgroundColor = '#c8f7c5'; // Verde claro (copiado)
-      setTimeout(() => {
-        output.style.backgroundColor = ''; // Restaurar el color original después de 1 segundo
-      }, 1000);
-    }).catch(err => {
-      console.error("Error al copiar:", err); // Registrar errores en la consola si ocurren
-    });
-  } else {
-    // Compatibilidad con navegadores antiguos
-    const input = document.getElementById('outputWhatsapp');
-    input.select();
-    document.execCommand('copy'); // Método de copia en navegadores más antiguos
+  // Seleccionar el contenido del textarea de salida
+  const output = document.getElementById('outputWhatsapp');
+  output.select();
+  document.execCommand('copy'); // Método de copia para compatibilidad con navegadores antiguos
 
-    // Aplicar el efecto visual
-    input.style.backgroundColor = '#c8f7c5';
-    setTimeout(() => {
-      input.style.backgroundColor = '';
-    }, 1000);
-  }
+  // Mostrar mensaje visual
+  const mensajeCopiado = document.getElementById('copiado');
+  mensajeCopiado.style.display = 'block';
+  setTimeout(() => mensajeCopiado.style.display = 'none', 2000);
 }
 </script>
 
