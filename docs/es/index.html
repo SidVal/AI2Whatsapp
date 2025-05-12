@@ -28,6 +28,8 @@
 
 <button onclick="copiarResultado()">Copiar al portapapeles</button> <div id="copiado" class="copiado" style="display: none;">Texto copiado al portapapeles</div>
 
+<br /><br /><button onclick="copiarTextoPlano()">Copiar texto plano</button>
+
 <script>
 function convertir() {
   let texto = document.getElementById('inputMarkdown').value;
@@ -81,6 +83,25 @@ function copiarResultado() {
   mensajeCopiado.style.display = 'block';
   setTimeout(() => mensajeCopiado.style.display = 'none', 2000);
 }
+
+function copiarTextoPlano() {
+  let texto = document.getElementById('outputWhatsapp').value;
+
+  if (!texto.trim()) return;
+
+  // Limpieza de formato Markdown
+  texto = texto.replace(/```/g, '');        // Elimina bloques de código
+  texto = texto.replace(/\*/g, '');         // Elimina asteriscos de negrita
+  texto = texto.replace(/_/g, '');          // Elimina guiones bajos (cursiva o subrayado)
+  texto = texto.replace(/~/g, '');          // Elimina tildes de tachado
+  texto = texto.replace(/^•\s?/gm, '- ');   // Opcional: pasa bullets a guiones
+
+  navigator.clipboard.writeText(texto).catch(err => {
+    console.error('Error al copiar texto plano:', err);
+  });
+}
+
+
 </script>
 
 </body>
