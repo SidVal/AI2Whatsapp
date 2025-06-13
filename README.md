@@ -2,6 +2,7 @@
 Copy from AI tools &amp; Paste to Whatsapp
 
 > Anteriormente se iba a llamar: "ChatGPT2Whatsapp - Formatter"
+> Ref: [SidV#82](https://github.com/SidVal/SidV/issues/82) - Abril 2025
 
 Convierte respuestas en formato Markdown (como las que genera ChatGPT) a formato compatible con WhatsApp, en segundos.
 
